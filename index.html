@@ -220,18 +220,15 @@
 </div>
 <div id="toast"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="config.js"></script>
+<script src="db.js"></script>
 <script>
 /* ===== الأرقام: [الرقم, الاسم, النوع] vc=فودافون كاش ip=إنستا باي ===== */
-const DATA = [
-  ["01055942436","Karim S","vc"],["01055942417","Karim S","vc"],["01042073401","Karim S","vc"],
-  ["01055366519","Mohamed S","vc"],["01055164733","Mohamed S","vc"],
-  ["01008137806","Sarwat A","ip"],
-  ["01035826232","Aya s m","vc"],["01035895030","Aya s m","vc"],["01024688189","Sarwat A","vc"],
-  ["01018364785","Azza M","vc"],["01013084346","Azza M","vc"],
-  ["01043592335","Ziad I","vc"],["01043599128","Ziad I","vc"],
-  ["01031038143","MYSORE G","vc"],["01097790697","MYSORE G","vc"],
-  ["01070435675","Irigy M","vc"],["01070638271","Irigy M","vc"]
-];
+let DATA = [];
+let loaded = false;
 const TYPES = {vc:"فودافون كاش", ip:"إنستا باي"};
 
 /* ===== أكواد الشركات ===== */
@@ -288,6 +285,7 @@ $("backBtn").addEventListener("click", ()=>history.back());
 const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
 function renderList(){
   const L=$("list"); L.innerHTML="";
+  if(!DATA.length){ L.innerHTML=`<div class="picked" style="justify-content:center;color:var(--muted)">${loaded?"مفيش أرقام متاحة دلوقتي، كلم المحل":"بنجهّز الأرقام..."}</div>`; return; }
   ["vc","ip"].forEach(type=>{
     if(filter!=="all" && filter!==type) return;
     const rows = DATA.filter(r=>r[2]===type); if(!rows.length) return;
@@ -333,6 +331,7 @@ $("toCode").addEventListener("click",()=>go(4,"fwd"));
 
 /* ===== 4: الكود ===== */
 function renderCode(){
+  state.logged=false;
   const c=COMPANIES[state.co]; const code=c.build(state.num,state.amount);
   $("sumNum").textContent=state.num; $("sumAmt").textContent=state.amount+" جنيه";
   $("codeText").textContent=code;
@@ -350,9 +349,16 @@ function renderCode(){
     $("cpAmt").onclick=e=>doCopy(state.amount,e.target);
   }
 }
+$("callBtn").addEventListener("click",()=>{
+  if(state.logged) return; state.logged=true;
+  DB.logTx({num:state.num,name:state.name,type:state.type,company:state.co,amount:parseInt(state.amount,10),code:$("codeText").textContent}).catch(()=>{});
+});
 $("copyCode").addEventListener("click",e=>doCopy($("codeText").textContent,e.target));
 
 /* ===== تشغيل ===== */
+if(DB.demo){var d=document.createElement("div");d.textContent="وضع تجريبي: لسه مفيش Firebase";d.style.cssText="position:fixed;top:0;left:0;right:0;background:#facc15;color:#422006;text-align:center;font-weight:800;font-size:12px;padding:3px;z-index:99";document.body.appendChild(d);}
+
+DB.onNumbers(rows=>{ DATA=rows.map(r=>[r.num,r.name,r.type]); loaded=true; renderList(); }, ()=>{ loaded=true; renderList(); });
 renderList();
 history.replaceState({step:1},"");
 go(1,"fwd",false);

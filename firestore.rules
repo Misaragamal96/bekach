@@ -1,0 +1,29 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner() {
+      return request.auth != null && request.auth.token.email == 'owner@bekach.app';
+    }
+
+    // الأرقام: أي عميل يقرأ، صاحب المحل بس يعدّل
+    match /numbers/{id} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // العمليات: أي عميل يسجّل عملية (بشروط)، صاحب المحل بس يقرأ ويمسح
+    match /transactions/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['num','name','type','company','amount','code','ts'])
+                    && request.resource.data.num is string && request.resource.data.num.size() == 11
+                    && request.resource.data.name is string && request.resource.data.name.size() < 40
+                    && request.resource.data.type in ['vc','ip']
+                    && request.resource.data.company in ['vf','or','et','we']
+                    && request.resource.data.amount is int
+                    && request.resource.data.amount > 0 && request.resource.data.amount <= 100000
+                    && request.resource.data.code is string && request.resource.data.code.size() < 40
+                    && request.resource.data.ts == request.time;
+      allow read, update, delete: if isOwner();
+    }
+  }
+}
