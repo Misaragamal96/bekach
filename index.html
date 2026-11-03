@@ -11,25 +11,19 @@
 <style>
   :root{
     --bg:#0b1220; --bg2:#111b30; --card:#16223a; --line:#24334f;
-    --text:#f4f7fb; --muted:#9fb0c8;
-    --green:#22c55e; --green2:#16a34a;
+    --text:#f4f7fb; --muted:#9fb0c8; --green:#22c55e;
     --vc:#e60000; --ip:#7c3aed;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0}
-  body{
-    font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
+  body{font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;
     background:radial-gradient(1200px 600px at 50% -10%,#16315a 0%,var(--bg) 60%) fixed;
-    color:var(--text); min-height:100vh; overflow-x:hidden;
-  }
+    color:var(--text); min-height:100vh; overflow-x:hidden}
+  button{font:inherit; color:inherit}
 
-  /* ---------- Splash ---------- */
-  #splash{
-    position:fixed; inset:0; z-index:50; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:18px;
-    background:radial-gradient(800px 500px at 50% 40%,#16315a 0%,var(--bg) 70%);
-    transition:opacity .6s ease, visibility .6s ease;
-  }
+  /* Splash */
+  #splash{position:fixed; inset:0; z-index:50; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
+    background:radial-gradient(800px 500px at 50% 40%,#16315a 0%,var(--bg) 70%); transition:opacity .6s ease, visibility .6s ease}
   #splash.hide{opacity:0; visibility:hidden}
   .logo-wrap{position:relative; width:130px; height:130px; display:grid; place-items:center}
   .ring{position:absolute; inset:0; border-radius:34px; border:2px solid var(--green); opacity:0; animation:ring 1.8s ease-out .5s infinite}
@@ -37,93 +31,121 @@
   @keyframes ring{0%{transform:scale(.8);opacity:.7}100%{transform:scale(1.6);opacity:0}}
   .logo{width:112px; height:112px; transform:scale(0) rotate(-20deg); animation:pop .9s cubic-bezier(.2,1.4,.4,1) .15s forwards}
   @keyframes pop{to{transform:scale(1) rotate(0)}}
-  .brand{font-size:44px; font-weight:800; letter-spacing:1px; direction:ltr; opacity:0; transform:translateY(14px); animation:up .7s ease .8s forwards}
+  .brand{font-size:44px; font-weight:800; direction:ltr; opacity:0; transform:translateY(14px); animation:up .7s ease .8s forwards}
   .brand b{color:var(--green)}
   .tagline{color:var(--muted); font-size:16px; opacity:0; transform:translateY(10px); animation:up .7s ease 1.15s forwards}
   @keyframes up{to{opacity:1; transform:none}}
-  .loader{width:120px; height:4px; background:#1f2f4d; border-radius:4px; overflow:hidden; margin-top:6px}
-  .loader i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--green),#86efac); animation:load 2s ease .3s forwards}
+  .loader{width:120px; height:4px; background:#1f2f4d; border-radius:4px; overflow:hidden}
+  .loader i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--green),#86efac); animation:load 1.8s ease .3s forwards}
   @keyframes load{to{width:100%}}
 
-  /* ---------- Page ---------- */
-  .wrap{max-width:520px; margin:0 auto; padding:22px 16px 60px}
+  /* Layout */
+  .wrap{max-width:520px; margin:0 auto; padding:18px 16px 60px}
   .reveal{opacity:0; transform:translateY(18px)}
   body.ready .reveal{animation:up .6s ease forwards; animation-delay:calc(var(--i,0) * 70ms)}
-
-  header{display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:6px}
-  header svg{width:46px; height:46px}
-  header .name{font-size:30px; font-weight:800; direction:ltr}
+  header{display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:4px}
+  header svg{width:40px; height:40px}
+  header .name{font-size:26px; font-weight:800; direction:ltr}
   header .name b{color:var(--green)}
-  h2{text-align:center; font-size:20px; font-weight:700; margin:10px 0 2px}
-  .lead{text-align:center; color:var(--muted); font-size:15px; margin:0 0 18px}
 
-  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:20px}
-  .step{background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:12px 6px; text-align:center}
-  .step .n{width:28px; height:28px; margin:0 auto 6px; border-radius:50%; background:var(--green); color:#04210f; font-weight:800; display:grid; place-items:center}
-  .step span{font-size:13px; font-weight:600; line-height:1.5; display:block}
+  .progress{display:flex; gap:6px; margin:14px 0 6px}
+  .progress i{flex:1; height:5px; border-radius:5px; background:var(--line); transition:background .3s}
+  .progress i.on{background:var(--green)}
+  .topbar{display:flex; align-items:center; min-height:44px; margin-bottom:4px}
+  .back{display:none; align-items:center; gap:6px; background:var(--bg2); border:1px solid var(--line); border-radius:12px; padding:8px 14px; font-weight:700; font-size:14px; cursor:pointer}
+  .back.show{display:inline-flex}
 
-  .tabs{display:flex; gap:8px; background:var(--bg2); padding:6px; border-radius:16px; border:1px solid var(--line); margin-bottom:16px}
-  .tab{flex:1; border:0; background:transparent; color:var(--muted); font:inherit; font-weight:700; font-size:14px; padding:10px 6px; border-radius:11px; cursor:pointer; transition:.2s}
+  /* Screens + animation */
+  #stage{position:relative}
+  .screen{display:none}
+  .screen.active{display:block}
+  .screen.in-fwd{animation:inFwd .45s cubic-bezier(.2,.9,.3,1)}
+  .screen.in-back{animation:inBack .45s cubic-bezier(.2,.9,.3,1)}
+  @keyframes inFwd{from{opacity:0; transform:translateX(-60px)}to{opacity:1; transform:none}}
+  @keyframes inBack{from{opacity:0; transform:translateX(60px)}to{opacity:1; transform:none}}
+  h2{text-align:center; font-size:22px; font-weight:800; margin:8px 0 4px}
+  .lead{text-align:center; color:var(--muted); font-size:15px; margin:0 0 16px}
+
+  /* Step 1 */
+  .tabs{display:flex; gap:8px; background:var(--bg2); padding:6px; border-radius:16px; border:1px solid var(--line); margin-bottom:12px}
+  .tab{flex:1; border:0; background:transparent; color:var(--muted); font-weight:700; font-size:14px; padding:10px 6px; border-radius:11px; cursor:pointer; transition:.2s}
   .tab.active{background:var(--green); color:#04210f}
-
-  .group-title{display:flex; align-items:center; gap:8px; font-weight:700; font-size:16px; margin:20px 4px 10px}
+  .group-title{display:flex; align-items:center; gap:8px; font-weight:700; font-size:16px; margin:18px 4px 10px}
   .dot{width:10px; height:10px; border-radius:50%}
   .dot.vc{background:var(--vc)} .dot.ip{background:var(--ip)}
   .count{margin-right:auto; color:var(--muted); font-weight:600; font-size:13px}
-
-  .item{
-    display:flex; align-items:center; gap:12px; width:100%;
-    background:var(--card); border:1px solid var(--line); border-radius:18px;
-    padding:14px; margin-bottom:10px; color:inherit; font:inherit; text-align:right; cursor:pointer;
-    transition:transform .15s ease, border-color .2s, background .2s;
-  }
-  .item:active{transform:scale(.97)}
-  .item:hover{border-color:#34507d}
+  .item{display:flex; align-items:center; gap:12px; width:100%; background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:14px; margin-bottom:10px; text-align:right; cursor:pointer; transition:transform .15s, border-color .2s}
+  .item:active{transform:scale(.97)} .item:hover{border-color:#34507d}
   .avatar{flex:none; width:46px; height:46px; border-radius:14px; display:grid; place-items:center; font-weight:800; font-size:18px; color:#fff; direction:ltr}
   .avatar.vc{background:linear-gradient(135deg,#ff3b3b,#b80000)}
   .avatar.ip{background:linear-gradient(135deg,#9d6bff,#5b21b6)}
   .info{flex:1; min-width:0}
   .who{font-size:14px; color:var(--muted); font-weight:600; direction:ltr; text-align:right}
   .num{font-size:21px; font-weight:800; letter-spacing:1px; direction:ltr; text-align:right}
-  .btn{flex:none; display:flex; align-items:center; gap:6px; background:var(--green); color:#04210f; font-weight:800; font-size:14px; padding:10px 14px; border-radius:12px; transition:.2s}
-  .btn svg{width:16px; height:16px}
-  .item.done{border-color:var(--green); background:#12301f}
-  .item.done .btn{background:#fff}
+  .chev{flex:none; width:22px; height:22px; color:var(--muted)}
 
-  .note{margin-top:22px; padding:14px; border-radius:16px; background:var(--bg2); border:1px dashed var(--line); color:var(--muted); font-size:13.5px; line-height:1.9; text-align:center}
+  .picked{display:flex; align-items:center; gap:12px; background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:12px 14px; margin-bottom:16px}
+  .picked .lbl{color:var(--muted); font-size:13px}
 
-  /* ---------- Toast ---------- */
-  #toast{
-    position:fixed; left:50%; bottom:22px; transform:translate(-50%,120px); width:calc(100% - 32px); max-width:480px;
-    background:#fff; color:#0b1220; padding:14px 18px; border-radius:18px; font-weight:700; font-size:15px; line-height:1.7;
-    box-shadow:0 12px 40px rgba(0,0,0,.45); transition:transform .35s cubic-bezier(.2,1,.3,1); z-index:40; text-align:center;
-  }
+  /* Step 2 */
+  .co{display:flex; align-items:center; gap:14px; width:100%; border:0; border-radius:20px; padding:18px; margin-bottom:12px; cursor:pointer; text-align:right; transition:transform .15s}
+  .co:active{transform:scale(.97)}
+  .co .badge{flex:none; width:52px; height:52px; border-radius:16px; background:rgba(255,255,255,.2); display:grid; place-items:center; font-size:24px; font-weight:800; direction:ltr}
+  .co .t{font-size:19px; font-weight:800} .co .s{font-size:13px; opacity:.85; font-weight:600}
+  .co.vf{background:linear-gradient(135deg,#ff2d2d,#a80000); color:#fff}
+  .co.or{background:linear-gradient(135deg,#ff9a1f,#e05a00); color:#fff}
+  .co.et{background:linear-gradient(135deg,#8ac43f,#3f7d1e); color:#fff}
+  .co.we{background:linear-gradient(135deg,#8b5cf6,#4c1d95); color:#fff}
+
+  /* Step 3 */
+  .amount-box{background:var(--card); border:2px solid var(--line); border-radius:22px; padding:18px; text-align:center; transition:border-color .2s}
+  .amount-box:focus-within{border-color:var(--green)}
+  .amount-box input{width:100%; background:transparent; border:0; outline:0; color:var(--text); font:inherit; font-size:46px; font-weight:800; text-align:center; direction:ltr}
+  .amount-box input::placeholder{color:#3a4c6b}
+  .amount-box .cur{color:var(--muted); font-weight:700}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin:14px 0 18px}
+  .chip{background:var(--bg2); border:1px solid var(--line); border-radius:30px; padding:8px 16px; font-weight:700; cursor:pointer}
+  .chip:active{background:var(--green); color:#04210f}
+  .primary{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; border:0; border-radius:18px; background:var(--green); color:#04210f; font-weight:800; font-size:19px; padding:16px; cursor:pointer; text-decoration:none; transition:.2s}
+  .primary:disabled{background:#26364f; color:#6b7f9e; cursor:not-allowed}
+  .primary:active:not(:disabled){transform:scale(.98)}
+  .primary svg{width:22px; height:22px}
+  .secondary{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; border:2px solid var(--green); border-radius:18px; background:transparent; color:var(--green); font-weight:800; font-size:17px; padding:13px; cursor:pointer; margin-top:10px}
+  .secondary.done{background:var(--green); color:#04210f}
+
+  /* Step 4 */
+  .sum{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px}
+  .sum div{background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:10px 12px; text-align:center}
+  .sum small{display:block; color:var(--muted); font-size:12px; font-weight:600}
+  .sum b{font-size:17px; direction:ltr; display:inline-block}
+  .codebox{background:#fff; color:#0b1220; border-radius:22px; padding:18px 12px; text-align:center; margin-bottom:14px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .codebox small{display:block; color:#475569; font-weight:700; font-size:13px; margin-bottom:6px}
+  .code{font-size:clamp(16px,5.4vw,26px); font-weight:800; direction:ltr; white-space:nowrap; unicode-bidi:isolate}
+  .guide{background:var(--bg2); border:1px dashed var(--line); border-radius:16px; padding:12px 14px; margin-top:14px; color:var(--muted); font-size:14px; line-height:1.9}
+  .guide b{color:var(--text)}
+  .mini{display:flex; gap:8px; margin-top:10px}
+  .mini button{flex:1; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 6px; font-weight:700; font-size:13px; cursor:pointer}
+  .mini button.done{background:var(--green); color:#04210f; border-color:var(--green)}
+
+  #toast{position:fixed; left:50%; bottom:22px; transform:translate(-50%,120px); width:calc(100% - 32px); max-width:480px; background:#fff; color:#0b1220;
+    padding:14px 18px; border-radius:18px; font-weight:700; font-size:15px; line-height:1.7; box-shadow:0 12px 40px rgba(0,0,0,.45); transition:transform .35s cubic-bezier(.2,1,.3,1); z-index:40; text-align:center}
   #toast.show{transform:translate(-50%,0)}
   #toast small{display:block; font-weight:600; color:#475569; font-size:13px}
-
-  @media (prefers-reduced-motion:reduce){
-    *{animation-duration:.01ms !important; animation-delay:0s !important; transition-duration:.01ms !important}
-    .reveal{opacity:1; transform:none}
-  }
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms !important; animation-delay:0s !important; transition-duration:.01ms !important}.reveal{opacity:1; transform:none}}
 </style>
 </head>
 <body>
 
-<!-- شاشة البداية -->
 <div id="splash">
   <div class="logo-wrap">
     <span class="ring"></span><span class="ring r2"></span>
     <svg class="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-label="BeKach">
-      <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/>
-        </linearGradient>
-      </defs>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient></defs>
       <rect width="120" height="120" rx="30" fill="url(#g1)"/>
       <path d="M40 28h24c13 0 20 7 20 16 0 6-3 10-8 13 7 3 11 8 11 15 0 11-8 20-23 20H40z" fill="#fff"/>
       <path d="M54 41v13h9c5 0 8-2 8-6.500S68 41 63 41zm0 28v14h10c6 0 9-3 9-7s-3-7-9-7z" fill="#15803d"/>
       <circle cx="90" cy="30" r="12" fill="#facc15"/>
-      <text x="90" y="35" text-anchor="middle" font-size="15" font-weight="800" fill="#854d0e" font-family="Arial">£</text>
     </svg>
   </div>
   <div class="brand">Be<b>Kach</b></div>
@@ -131,7 +153,6 @@
   <div class="loader"><i></i></div>
 </div>
 
-<!-- الصفحة -->
 <div class="wrap">
   <header class="reveal" style="--i:0">
     <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -143,131 +164,199 @@
     <div class="name">Be<b>Kach</b></div>
   </header>
 
-  <h2 class="reveal" style="--i:1">أرقام التحويل</h2>
-  <p class="lead reveal" style="--i:2">اختار الرقم واضغط عليه، وهيتنسخ لوحده</p>
+  <div class="progress reveal" style="--i:1" id="progress"><i></i><i></i><i></i><i></i></div>
+  <div class="topbar reveal" style="--i:2"><button class="back" id="backBtn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>رجوع</button></div>
 
-  <div class="steps reveal" style="--i:3">
-    <div class="step"><div class="n">1</div><span>اضغط على الرقم</span></div>
-    <div class="step"><div class="n">2</div><span>افتح تطبيق التحويل</span></div>
-    <div class="step"><div class="n">3</div><span>الصق الرقم وحوّل</span></div>
-  </div>
+  <div id="stage" class="reveal" style="--i:3">
 
-  <div class="tabs reveal" style="--i:4" id="tabs">
-    <button class="tab active" data-f="all">الكل</button>
-    <button class="tab" data-f="vc">فودافون كاش</button>
-    <button class="tab" data-f="ip">إنستا باي</button>
-  </div>
+    <!-- 1: اختيار الرقم -->
+    <section class="screen" id="s1">
+      <h2>اختار الرقم اللي هتحوّله</h2>
+      <p class="lead">اضغط على الرقم المطلوب</p>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-f="all">الكل</button>
+        <button class="tab" data-f="vc">فودافون كاش</button>
+        <button class="tab" data-f="ip">إنستا باي</button>
+      </div>
+      <div id="list"></div>
+    </section>
 
-  <div id="list"></div>
+    <!-- 2: الشركة -->
+    <section class="screen" id="s2">
+      <div class="picked" id="picked2"></div>
+      <h2>انت هتحوّل من أنهي شركة؟</h2>
+      <p class="lead">اختار الشركة اللي محفظتك عليها</p>
+      <div id="companies"></div>
+    </section>
 
-  <div class="note reveal" style="--i:6">
-    اتأكد من الاسم اللي بيظهر لك قبل ما تأكد التحويل،<br>ولو في أي مشكلة كلم المحل.
+    <!-- 3: المبلغ -->
+    <section class="screen" id="s3">
+      <div class="picked" id="picked3"></div>
+      <h2>كام جنيه هتحوّل؟</h2>
+      <p class="lead">اكتب المبلغ أو اختار من الأرقام السريعة</p>
+      <div class="amount-box">
+        <input id="amount" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0" autocomplete="off" maxlength="6">
+        <span class="cur">جنيه مصري</span>
+      </div>
+      <div class="chips" id="chips"></div>
+      <button class="primary" id="toCode" disabled>التالي</button>
+    </section>
+
+    <!-- 4: الكود -->
+    <section class="screen" id="s4">
+      <div class="sum">
+        <div><small>هتحوّل لـ</small><b id="sumNum"></b></div>
+        <div><small>المبلغ</small><b id="sumAmt"></b></div>
+      </div>
+      <div class="codebox"><small id="codeLabel">الكود</small><div class="code" id="codeText"></div></div>
+      <a class="primary" id="callBtn" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.300a2 2 0 0 1 2.1-.4c.9.3 1.800.6 2.800.7a2 2 0 0 1 1.700 2z"/></svg>
+        اتصل دلوقتي</a>
+      <button class="secondary" id="copyCode">نسخ الكود</button>
+      <div class="guide" id="guide"></div>
+    </section>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-/* ===== البيانات: [الرقم, الاسم, النوع] ===== */
-/* vc = فودافون كاش | ip = إنستا باي */
+/* ===== الأرقام: [الرقم, الاسم, النوع] vc=فودافون كاش ip=إنستا باي ===== */
 const DATA = [
-  ["01055942436","Karim S","vc"],
-  ["01055942417","Karim S","vc"],
-  ["01042073401","Karim S","vc"],
-  ["01055366519","Mohamed S","vc"],
-  ["01055164733","Mohamed S","vc"],
+  ["01055942436","Karim S","vc"],["01055942417","Karim S","vc"],["01042073401","Karim S","vc"],
+  ["01055366519","Mohamed S","vc"],["01055164733","Mohamed S","vc"],
   ["01008137806","Sarwat A","ip"],
-  ["01035826232","Aya s m","vc"],
-  ["01035895030","Aya s m","vc"],
-  ["01024688189","Sarwat A","vc"],
-  ["01018364785","Azza M","vc"],
-  ["01013084346","Azza M","vc"],
-  ["01043592335","Ziad I","vc"],
-  ["01043599128","Ziad I","vc"],
-  ["01031038143","MYSORE G","vc"],
-  ["01097790697","MYSORE G","vc"],
-  ["01070435675","Irigy M","vc"],
-  ["01070638271","Irigy M","vc"]
+  ["01035826232","Aya s m","vc"],["01035895030","Aya s m","vc"],["01024688189","Sarwat A","vc"],
+  ["01018364785","Azza M","vc"],["01013084346","Azza M","vc"],
+  ["01043592335","Ziad I","vc"],["01043599128","Ziad I","vc"],
+  ["01031038143","MYSORE G","vc"],["01097790697","MYSORE G","vc"],
+  ["01070435675","Irigy M","vc"],["01070638271","Irigy M","vc"]
 ];
+const TYPES = {vc:"فودافون كاش", ip:"إنستا باي"};
 
-const TYPES = {
-  vc:{title:"فودافون كاش", app:"فودافون كاش"},
-  ip:{title:"إنستا باي",   app:"إنستا باي"}
+/* ===== أكواد الشركات ===== */
+/* direct=true يعني الكود فيه الرقم والمبلغ جاهزين، والمكالمة تخلص التحويل */
+const COMPANIES = {
+  vf:{name:"فودافون كاش", sub:"كود جاهز بالرقم والمبلغ", badge:"V", direct:true,
+      build:(n,a)=>`*9*7*${n}*${a}#`, steps:"اتصل، واكتب الرقم السري لما يطلبه، وأكد التحويل."},
+  or:{name:"أورنچ كاش", sub:"كود القايمة #115#", badge:"O", direct:false,
+      build:()=>`#115#`, steps:"من القايمة اختار <b>تحويل الأموال</b>، وبعدها اكتب الرقم والمبلغ، وأكد بالرقم السري."},
+  et:{name:"اتصالات كاش (e&)", sub:"كود القايمة *777*1#", badge:"e&", direct:false,
+      build:()=>`*777*1#`, steps:"اكتب الرقم السري، وبعدها الرقم والمبلغ، وأكد التحويل."},
+  we:{name:"وي باي (WE Pay)", sub:"كود القايمة *7*2#", badge:"W", direct:false,
+      build:()=>`*7*2#`, steps:"اتبع القايمة، واكتب الرقم والمبلغ، وأكد بالرقم السري. <b>الكود ده لسه محتاج تجربة.</b>"}
 };
+const CO_CLASS = {vf:"vf", or:"or", et:"et", we:"we"};
 
-const listEl = document.getElementById("list");
-const toast  = document.getElementById("toast");
-let toastTimer, filter = "all";
+/* ===== الحالة ===== */
+const state = {step:1, num:null, name:null, type:null, co:null, amount:""};
+const $ = id => document.getElementById(id);
+const toastEl = $("toast"); let toastTimer, filter="all";
 
+function showToast(html){ toastEl.innerHTML=html; toastEl.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>toastEl.classList.remove("show"),2800); }
 function copyText(t){
-  if(navigator.clipboard && window.isSecureContext){ return navigator.clipboard.writeText(t); }
-  return new Promise((ok,no)=>{
-    const a=document.createElement("textarea");
-    a.value=t; a.style.cssText="position:fixed;opacity:0";
-    document.body.appendChild(a); a.focus(); a.select();
-    try{ document.execCommand("copy") ? ok() : no(); }catch(e){ no(); }
-    document.body.removeChild(a);
-  });
+  if(navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(t);
+  return new Promise((ok,no)=>{ const a=document.createElement("textarea"); a.value=t; a.style.cssText="position:fixed;opacity:0";
+    document.body.appendChild(a); a.focus(); a.select(); try{document.execCommand("copy")?ok():no()}catch(e){no()} document.body.removeChild(a); });
+}
+function doCopy(t, btn, okLabel){
+  copyText(t).then(()=>{ if(btn){ const old=btn.textContent; btn.classList.add("done"); btn.textContent=okLabel||"تم النسخ ✓"; setTimeout(()=>{btn.classList.remove("done"); btn.textContent=old;},2000);} showToast("تم النسخ ✓<small>"+t+"</small>"); })
+  .catch(()=>showToast("مقدرناش ننسخ<small>اضغط مطولاً على الكود وانسخه</small>"));
 }
 
-function showToast(html){
-  toast.innerHTML = html;
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toast.classList.remove("show"), 3200);
+/* ===== التنقل بين الصفحات ===== */
+function go(step, dir, push=true){
+  const prev = document.querySelector(".screen.active");
+  if(prev) prev.classList.remove("active","in-fwd","in-back");
+  const el = $("s"+step);
+  el.classList.add("active", dir==="back" ? "in-back" : "in-fwd");
+  state.step = step;
+  [...$("progress").children].forEach((b,i)=>b.classList.toggle("on", i<step));
+  $("backBtn").classList.toggle("show", step>1);
+  if(push) history.pushState({step}, "");
+  window.scrollTo({top:0, behavior:"smooth"});
+  if(step===3) setTimeout(()=>$("amount").focus(), 480);
+  if(step===4) renderCode();
 }
+window.addEventListener("popstate", e=>{
+  const s = (e.state && e.state.step) || 1;
+  if(s < state.step) go(s, "back", false);
+});
+$("backBtn").addEventListener("click", ()=>history.back());
 
-const ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
-
-function render(){
-  listEl.innerHTML = "";
+/* ===== 1: قائمة الأرقام ===== */
+const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+function renderList(){
+  const L=$("list"); L.innerHTML="";
   ["vc","ip"].forEach(type=>{
     if(filter!=="all" && filter!==type) return;
-    const rows = DATA.filter(r=>r[2]===type);
-    if(!rows.length) return;
-
-    const gt = document.createElement("div");
-    gt.className = "group-title";
-    gt.innerHTML = `<span class="dot ${type}"></span>${TYPES[type].title}<span class="count">${rows.length} ${rows.length>2?"أرقام":"رقم"}</span>`;
-    listEl.appendChild(gt);
-
+    const rows = DATA.filter(r=>r[2]===type); if(!rows.length) return;
+    const gt=document.createElement("div"); gt.className="group-title";
+    gt.innerHTML=`<span class="dot ${type}"></span>${TYPES[type]}<span class="count">${rows.length} ${rows.length>2?"أرقام":"رقم"}</span>`;
+    L.appendChild(gt);
     rows.forEach(([num,name])=>{
-      const b = document.createElement("button");
-      b.className = "item";
-      b.innerHTML = `
-        <div class="avatar ${type}">${name.trim()[0].toUpperCase()}</div>
-        <div class="info"><div class="who">${name}</div><div class="num">${num}</div></div>
-        <div class="btn">${ICON}<span>نسخ</span></div>`;
-      b.addEventListener("click", ()=>{
-        copyText(num).then(()=>{
-          b.classList.add("done");
-          b.querySelector(".btn span").textContent = "تم النسخ";
-          showToast(`تم نسخ الرقم ✓<small>افتح ${TYPES[type].app} والصق الرقم</small>`);
-          setTimeout(()=>{ b.classList.remove("done"); b.querySelector(".btn span").textContent="نسخ"; }, 2500);
-        }).catch(()=> showToast("مقدرناش ننسخ<small>اضغط مطولاً على الرقم وانسخه</small>"));
-      });
-      listEl.appendChild(b);
+      const b=document.createElement("button"); b.className="item";
+      b.innerHTML=`<div class="avatar ${type}">${name.trim()[0].toUpperCase()}</div><div class="info"><div class="who">${name}</div><div class="num">${num}</div></div>${CHEV}`;
+      b.addEventListener("click",()=>{ state.num=num; state.name=name; state.type=type; state.co=null; state.amount=""; $("amount").value=""; updateNext();
+        const html=`<div class="avatar ${type}">${name.trim()[0].toUpperCase()}</div><div class="info"><div class="lbl">هتحوّل لـ</div><div class="num" style="font-size:19px">${num}</div><div class="who">${name}</div></div>`;
+        $("picked2").innerHTML=html; $("picked3").innerHTML=html;
+        go(2,"fwd"); });
+      L.appendChild(b);
     });
   });
 }
+$("tabs").addEventListener("click",e=>{ const t=e.target.closest(".tab"); if(!t) return;
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active")); t.classList.add("active"); filter=t.dataset.f; renderList(); });
 
-document.getElementById("tabs").addEventListener("click", e=>{
-  const t = e.target.closest(".tab"); if(!t) return;
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  t.classList.add("active");
-  filter = t.dataset.f;
-  render();
+/* ===== 2: الشركات ===== */
+(function(){
+  const C=$("companies");
+  Object.entries(COMPANIES).forEach(([k,c])=>{
+    const b=document.createElement("button"); b.className="co "+CO_CLASS[k];
+    b.innerHTML=`<div class="badge">${c.badge}</div><div style="flex:1"><div class="t">${c.name}</div><div class="s">${c.sub}</div></div>${CHEV}`;
+    b.addEventListener("click",()=>{ state.co=k; go(3,"fwd"); });
+    C.appendChild(b);
+  });
+})();
+
+/* ===== 3: المبلغ ===== */
+const amt=$("amount");
+function updateNext(){ const v=parseInt(state.amount||"0",10); $("toCode").disabled = !(v>0); }
+amt.addEventListener("input",()=>{ amt.value=amt.value.replace(/[^0-9]/g,"").replace(/^0+/,""); state.amount=amt.value; updateNext(); });
+amt.addEventListener("keydown",e=>{ if(e.key==="Enter" && !$("toCode").disabled) $("toCode").click(); });
+[50,100,200,500,1000,2000].forEach(v=>{
+  const c=document.createElement("button"); c.className="chip"; c.textContent=v;
+  c.addEventListener("click",()=>{ amt.value=v; state.amount=String(v); updateNext(); });
+  $("chips").appendChild(c);
 });
+$("toCode").addEventListener("click",()=>go(4,"fwd"));
 
-render();
+/* ===== 4: الكود ===== */
+function renderCode(){
+  const c=COMPANIES[state.co]; const code=c.build(state.num,state.amount);
+  $("sumNum").textContent=state.num; $("sumAmt").textContent=state.amount+" جنيه";
+  $("codeText").textContent=code;
+  $("codeLabel").textContent = c.direct ? "الكود جاهز، اضغط اتصل" : "كود "+c.name;
+  $("callBtn").href="tel:"+encodeURIComponent(code);
+  $("copyCode").textContent="نسخ الكود"; $("copyCode").classList.remove("done");
+  let g = `<b>بعد الاتصال:</b> ${c.steps}`;
+  if(!c.direct){
+    g += `<div class="mini"><button id="cpNum">نسخ الرقم</button><button id="cpAmt">نسخ المبلغ</button></div>`;
+  }
+  g += `<br><small>لو الاتصال مفتحش القايمة، اضغط "نسخ الكود" وألصقه في تطبيق الاتصال.</small>`;
+  $("guide").innerHTML=g;
+  if(!c.direct){
+    $("cpNum").onclick=e=>doCopy(state.num,e.target);
+    $("cpAmt").onclick=e=>doCopy(state.amount,e.target);
+  }
+}
+$("copyCode").addEventListener("click",e=>doCopy($("codeText").textContent,e.target));
 
-/* إخفاء شاشة البداية وإظهار الصفحة */
-window.addEventListener("load", ()=>{
-  setTimeout(()=>{
-    document.getElementById("splash").classList.add("hide");
-    document.body.classList.add("ready");
-  }, 2400);
-});
+/* ===== تشغيل ===== */
+renderList();
+history.replaceState({step:1},"");
+go(1,"fwd",false);
+window.addEventListener("load",()=>{ setTimeout(()=>{ $("splash").classList.add("hide"); document.body.classList.add("ready"); },2200); });
 </script>
 </body>
 </html>
